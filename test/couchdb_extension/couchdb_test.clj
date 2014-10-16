@@ -3,15 +3,17 @@
   (:use clojure.test
         midje.sweet)
   (:require [couchdb-extension.couchdb :as couchdb]
+            [couchdb-extension.clutch :as clutch-extended]
             [com.ashafa.clutch :as clutch])
   (:import [java.lang IllegalStateException]
            [java.util Date]
            [java.net ConnectException]))
+
 (def currentNamespace (str *ns*))
 
 (fact "if the server is down we return false"
   (couchdb/server-is-up? currentNamespace) => false
-  (provided (clutch/couch currentNamespace) => anything)
+  (provided (clutch-extended/couch currentNamespace) => anything)
   (provided (couchdb/count-db anything) =throws=> (ConnectException.)))
 
 (fact "if the server is up we return true"
@@ -20,18 +22,18 @@
 
 (fact "if the server is up and the database is ready we just return correctly"
   (couchdb/first-time? currentNamespace) => false
-  (provided (clutch/couch currentNamespace) => anything)
+  (provided (clutch-extended/couch currentNamespace) => anything)
   (provided (couchdb/count-db anything) => 3))
 
 (fact "if the server is up but the database is not created we create it"
   (couchdb/first-time? currentNamespace) => true
-  (provided (clutch/couch currentNamespace) => anything)
+  (provided (clutch-extended/couch currentNamespace) => anything)
   (provided (couchdb/count-db anything) =throws=> (IllegalStateException.))
   (provided (clutch/create! anything) => anything))
 
 (fact "Store default configuration for the historian"
   (couchdb/store currentNamespace :configuration {"username" "Daniil" "password" "password" "server" "pi-connector-test.dsquare.intra"}) => anything
-  (provided (clutch/couch currentNamespace) => "mock")
+  (provided (clutch-extended/couch currentNamespace) => "mock")
   (provided
     (clutch/assoc! "mock" :configuration {"username" "Daniil" "password" "password" "server" "pi-connector-test.dsquare.intra"})
     => {:result {:ok true, :id ":configuration", :rev "2-16870bc1dc06755b895ba715da9041ce"}}))
@@ -42,21 +44,20 @@
                                                            :server "pi-connector-test.dsquare.intra"
                                                            :username "Daniil"
                                                            :password "password"}
-  (provided (clutch/couch currentNamespace) => {:configuration {:_id ":configuration"
-                                                                :_rev "3-887ec7ea147165566a5ac5948eb7c383"
-                                                                :server "pi-connector-test.dsquare.intra"
-                                                                :username "Daniil"
-                                                                :password "password"}}))
+  (provided (clutch-extended/couch currentNamespace) => {:configuration {:_id ":configuration"
+                                                                         :_rev "3-887ec7ea147165566a5ac5948eb7c383"
+                                                                         :server "pi-connector-test.dsquare.intra"
+                                                                         :username "Daniil"
+                                                                         :password "password"}}))
 
 (fact "update configuration"
-  (couchdb/update-value currentNamespace :configuration
-    {:username "edu" :password "edu-passowrd" :server "pi-connector-test.dsquare.intra"}) => anything
+  (couchdb/update-value currentNamespace :configuration {:username "edu" :password "edu-passowrd" :server "pi-connector-test.dsquare.intra"}) => anything
 
-  (provided (clutch/couch currentNamespace) => {:configuration {:_id ":configuration"
-                                                                :_rev "3-887ec7ea147165566a5ac5948eb7c383"
-                                                                :server "pi-connector-test.dsquare.intra"
-                                                                :username "Daniil"
-                                                                :password "password"}})
+  (provided (clutch-extended/couch currentNamespace) => {:configuration {:_id ":configuration"
+                                                                         :_rev "3-887ec7ea147165566a5ac5948eb7c383"
+                                                                         :server "pi-connector-test.dsquare.intra"
+                                                                         :username "Daniil"
+                                                                         :password "password"}})
   (provided (clutch/assoc!
               anything :configuration {:_rev "3-887ec7ea147165566a5ac5948eb7c383"
                                        :server "pi-connector-test.dsquare.intra"
@@ -65,7 +66,7 @@
 (fact "update configuration when the key does not exist"
   (couchdb/update-value currentNamespace :configuration {:username "edu"}) => anything
 
-  (provided (clutch/couch currentNamespace) => {})
+  (provided (clutch-extended/couch currentNamespace) => {})
   (provided (clutch/assoc!
               anything :configuration {:username "edu"}) => anything))
 
@@ -92,9 +93,9 @@
         :server "pi-connector-test.dsquare.intra"
         :username "Daniil"
         :password "password"})
-  (provided (couchdb/override-reference  {:server "pi-connector-test.dsquare.intra"
-                                          :username "Daniil"
-                                          :password "password"} testAtom) => anything)
+  (provided (couchdb/override-reference {:server "pi-connector-test.dsquare.intra"
+                                         :username "Daniil"
+                                         :password "password"} testAtom) => anything)
   (provided (couchdb/add-configuration-watch currentNamespace testAtom) => anything))
 
 (fact "If it's the first time we story the default values"
