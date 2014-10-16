@@ -1,4 +1,6 @@
 (ns couchdb-extension.couchdb
+  (:use [couchdb-extension.clutch :only (couch drop! up? exist?)]
+        [com.ashafa.clutch :only (create!)])
   (:require [com.ashafa.clutch :as clutch]
             [clojure.string :as string])
   (:import [java.lang IllegalStateException]
@@ -9,7 +11,7 @@
   (count historianDB))
 
 (defn server-is-up? [^String database]
-  (let [historianDB (clutch/couch database)]
+  (let [historianDB (couch database)]
     (try (do
            (count-db historianDB)
            true)
@@ -23,12 +25,16 @@
     (catch IllegalStateException _ false)))
 
 (defn create-db [^String database]
-  (let [historianDB (clutch/couch database)]
+  (let [historianDB (couch database)]
     (if-not (database-exists? historianDB)
       (clutch/create! historianDB))))
 
+(defn drop-db [^String database]
+  (let [historianDB (couch database)]
+    (drop! historianDB)))
+
 (defn first-time? [^String database]
-  (let [historianDB (clutch/couch database)]
+  (let [historianDB (couch database)]
     (if-not (database-exists? historianDB)
       (do
         (clutch/create! historianDB)
@@ -36,23 +42,23 @@
       false)))
 
 (defn store [^String database key map]
-  (let [historianDB (clutch/couch database)]
+  (let [historianDB (couch database)]
     (clutch/assoc! historianDB key map)))
 
 (defn remove-value [^String database key]
-  (let [historianDB (clutch/couch database)]
+  (let [historianDB (couch database)]
     (clutch/dissoc! historianDB key)))
 
 (defn take-all [^String database]
-  (let [historianDB (clutch/couch database)]
+  (let [historianDB (couch database)]
     (take (count historianDB) historianDB)))
 
 (defn get-value [^String database ^Keyword key]
-  (let [historianDB (clutch/couch database)]
+  (let [historianDB (couch database)]
     (get historianDB key)))
 
 (defn update-value [^String database ^Keyword key map]
-  (let [historianDB (clutch/couch database)
+  (let [historianDB (couch database)
         keyValue (get historianDB key)]
     (->>
       (if (not (nil? keyValue))
