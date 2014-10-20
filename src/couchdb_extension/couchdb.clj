@@ -1,8 +1,9 @@
 (ns couchdb-extension.couchdb
-  (:use [couchdb-extension.clutch :only (couch drop! up? exist?)]
+  (:use [be.dsquare.clutch :only (couch drop! up? exist?)]
         [com.ashafa.clutch :only (create!)])
   (:require [com.ashafa.clutch :as clutch]
-            [clojure.string :as string])
+            [clojure.string :as string]
+            [be.dsquare.clutch :as dsquare-clutch])
   (:import [java.lang IllegalStateException]
            [java.net ConnectException]
            [clojure.lang Keyword]))
@@ -12,21 +13,15 @@
 
 (defn server-is-up? [^String database]
   (let [historianDB (couch database)]
-    (try (do
-           (count-db historianDB)
-           true)
-      (catch ConnectException _ false)
-      (catch IllegalStateException _ true))))
+    (up? historianDB)))
 
-(defn database-exists? [historianDB]
-  (try (do
-         (count-db historianDB)
-         true)
-    (catch IllegalStateException _ false)))
+(defn database-exist? [database]
+  (let [historianDB (couch database)]
+    (exist? historianDB)))
 
 (defn create-db [^String database]
   (let [historianDB (couch database)]
-    (if-not (database-exists? historianDB)
+    (if-not (exist? historianDB)
       (clutch/create! historianDB))))
 
 (defn drop-db [^String database]
@@ -35,7 +30,7 @@
 
 (defn first-time? [^String database]
   (let [historianDB (couch database)]
-    (if-not (database-exists? historianDB)
+    (if-not (exist? historianDB)
       (do
         (clutch/create! historianDB)
         true)
@@ -51,7 +46,7 @@
 
 (defn take-all [^String database]
   (let [historianDB (couch database)]
-    (take (count historianDB) historianDB)))
+    (dsquare-clutch/take-all historianDB)))
 
 (defn get-value [^String database ^Keyword key]
   (let [historianDB (couch database)]
@@ -98,14 +93,13 @@
 
   (init [this]
     (when (server-is-up? (cast-namespace (:namespace this)))
-      (do
-        (when (first-time? (cast-namespace (:namespace this)))
-          (store (cast-namespace (:namespace this)) :configuration @(:reference this)))
-        (->
-          (get-value (cast-namespace (:namespace this)) :configuration )
-          (dissoc :_id :_rev )
-          (override-reference (:reference this)))
-        (add-configuration-watch (:namespace this) (:reference this))))))
+      (when (first-time? (cast-namespace (:namespace this)))
+        (store (cast-namespace (:namespace this)) :configuration @(:reference this)))
+      (->
+        (get-value (cast-namespace (:namespace this)) :configuration )
+        (dissoc :_id :_rev )
+        (override-reference (:reference this)))
+      (add-configuration-watch (:namespace this) (:reference this)))))
 
 (defn database [^clojure.lang.Namespace namespace
                 ^clojure.lang.IRef reference]
