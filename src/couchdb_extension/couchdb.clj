@@ -1,13 +1,10 @@
 (ns couchdb-extension.couchdb
-  (:gen-class)
   (:use [be.dsquare.clutch :only (couch drop! up? exist?)]
         [com.ashafa.clutch :only (create!)])
   (:require [com.ashafa.clutch :as clutch]
             [clojure.string :as string]
             [be.dsquare.clutch :as dsquare-clutch])
-  (:import [java.lang IllegalStateException]
-           [java.net ConnectException]
-           [clojure.lang Keyword]))
+  (:import [clojure.lang Keyword]))
 
 (defn count-db [historianDB]
   (count historianDB))
@@ -62,8 +59,36 @@
         map)
       (clutch/assoc! historianDB key))))
 
+(defn create-view!
+  "Creates a Javascript view. You have to specify the database name,
+  the design name, the view name and the javascript function"
+  [^String database ^String design-name ^String view-name ^String javascript-function]
+  (let [historian-db (couch database)]
+    (dsquare-clutch/create-view! historian-db design-name view-name javascript-function)))
+
+(defn get-view
+  "Returns a couchdb view. You have to specify the database name,
+  the design name and the view name.
+  Returns a lazy-seq on the couchdb view"
+  [^String database ^String design-name ^String view-name]
+  (clutch/get-view database design-name (keyword view-name)))
+
+(defn create-user-view!
+  "The design name it will be in the database name with '-' and username.
+  The same for the view name. Creates a concrete view for the user"
+  [^String database ^String username ^String javascript-function]
+  (let [historian-db (couch database)]
+    (dsquare-clutch/create-user-view! historian-db username javascript-function)))
+
+(defn get-user-view
+  "The design name it will be the database name with '-' and username.
+  The same for the view name. Returns a lazy-seq on the couchdb view."
+  [^String database ^String username]
+  (let [historian-db (couch database)]
+    (dsquare-clutch/get-user-view historian-db username)))
+
 (defn remove-configuration-watch [^clojure.lang.IRef reference]
-  (remove-watch reference :configuration ))
+  (remove-watch reference :configuration))
 
 (defn cast-namespace [^clojure.lang.Namespace namespace]
   (->
@@ -97,8 +122,8 @@
       (when (first-time? (cast-namespace (:namespace this)))
         (store (cast-namespace (:namespace this)) :configuration @(:reference this)))
       (->
-        (get-value (cast-namespace (:namespace this)) :configuration )
-        (dissoc :_id :_rev )
+        (get-value (cast-namespace (:namespace this)) :configuration)
+        (dissoc :_id :_rev)
         (override-reference (:reference this)))
       (add-configuration-watch (:namespace this) (:reference this)))))
 
