@@ -6,7 +6,7 @@
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [clj-http "0.7.8"]
                  [org.clojure/data.json "0.2.4"]
-                 [com.ashafa/clutch "0.4.0-RC1" :exclusions [clj-http]]]
+                 [com.ashafa/clutch "0.4.0" :exclusions [clj-http]]]
 
   :plugins [[lein-midje "3.1.3"]
             [lein-pprint "1.1.1"]

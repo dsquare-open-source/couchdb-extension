@@ -1,4 +1,5 @@
 (ns couchdb-extension.couchdb
+  (:gen-class)
   (:use [be.dsquare.clutch :only (couch drop! up? exist?)]
         [com.ashafa.clutch :only (create!)])
   (:require [com.ashafa.clutch :as clutch]
