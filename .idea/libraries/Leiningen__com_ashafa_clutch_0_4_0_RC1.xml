@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Leiningen: com.ashafa:clutch:0.4.0-RC1">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/ashafa/clutch/0.4.0-RC1/clutch-0.4.0-RC1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
