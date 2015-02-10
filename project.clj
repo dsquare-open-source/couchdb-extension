@@ -15,12 +15,12 @@
   :repl-options {:welcome (println "Welcome to the magical world of the repl!")
                  :port 4001}
   ;  [lein-cloverage "1.0.3-SNAPSHOT"]
-  :deploy-repositories [["releases" {:url "http://nexus.dsquare.intra/content/repositories/hps-releases"
-                                     :sign-releases false}]
-                        ["snapshots" {:url "http://nexus.dsquare.intra/content/repositories/hps-snapshots"
-                                      :sign-releases false}]]
-  :mirrors {"central" {:name "nexus"
-                       :url "http://nexus.dsquare.intra/content/groups/public"}}
+  ;:deploy-repositories [["releases" {:url "http://nexus.dsquare.intra/content/repositories/hps-releases"
+  ;                                   :sign-releases false}]
+  ;                      ["snapshots" {:url "http://nexus.dsquare.intra/content/repositories/hps-snapshots"
+  ;                                    :sign-releases false}]]
+  ;:mirrors {"central" {:name "nexus"
+  ;                     :url "http://nexus.dsquare.intra/content/groups/public"}}
 
   :min-lein-version "2.0.0"
 
