@@ -1,8 +1,8 @@
 (defproject couchdb-extension "0.1.3"
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
-  :license {:name "Eclipse Public License"
-            :url "http://www.eclipse.org/legal/epl-v10.html"}
+  :description "Library that extends Clutch library to make it simpler and easier to use"
+  :url "https://github.com/dsquare-open-source/couchdb-extension"
+  :license {:name "BSD"
+            :url "http://www.opensource.org/licenses/BSD-3-Clause"}
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [clj-http "0.7.8"]
                  [org.clojure/data.json "0.2.4"]

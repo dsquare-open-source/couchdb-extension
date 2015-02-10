@@ -1,13 +1,23 @@
 # couchdb-extension
 
-A Clojure library designed to ... well, that part is up to you.
+CouchDB-Extension is a [Clojure](http://clojure.org) library for [Apache CouchDB](http://couchdb.apache.org/) that
+extends [Clutch](https://github.com/clojure-clutch/clutch) to make it easier and simpler to use inside a Clojure project.
 
-## Usage
 
-FIXME
+## Contributors
+
+Appreciations go out to:
+
+* [Eduard Cespedes Borras](https://github.com/haduart)
+* [Roberto Barchino Garrido](https://github.com/fisoide)
+* [Daniil Moskovtsov](https://github.com/dmoskovsov)
+* Igor Ruzanov
+* Jeroen Hoekx
+
+## Sponsored
+This project is sponsored by [DSQuare N.V](http://dsquare.be)
+
 
 ## License
 
-Copyright © 2014 FIXME
-
-Distributed under the Eclipse Public License, the same as Clojure.
+BSD.  See the LICENSE file at the root of this repository.
