@@ -4,6 +4,8 @@
 CouchDB-Extension is a [Clojure](http://clojure.org) library for [Apache CouchDB](http://couchdb.apache.org/) that
 extends [Clutch](https://github.com/clojure-clutch/clutch) to make it easier and simpler to use inside a Clojure project.
 
+## Usage
+Current stable version: [![Clojars Project](http://clojars.org/couchdb-extension/latest-version.svg)](http://clojars.org/couchdb-extension)
 
 ## Contributors
 
