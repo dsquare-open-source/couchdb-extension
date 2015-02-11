@@ -19,6 +19,7 @@ Appreciations go out to:
 * [Jeroen Hoekx](https://github.com/jhoekx)
 
 ## Sponsored
+
 This project is sponsored by [D square N.V](http://dsquare.be)
 
 
