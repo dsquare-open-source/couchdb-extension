@@ -6,7 +6,6 @@
             [be.dsquare.clutch :as clutch-extended]
             [com.ashafa.clutch :as clutch])
   (:import [java.lang IllegalStateException]
-           [java.util Date]
            [java.net ConnectException]))
 
 (def currentNamespace (str *ns*))
