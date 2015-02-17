@@ -87,9 +87,14 @@
   (let [historian-db (couch database)]
     (dsquare-clutch/get-user-view historian-db username)))
 
+(defn remove-view!
+  "Removes a concrete view for the user"
+  [^String database ^String design-view ^String view-name]
+  (let [historian-db (couch database)]
+    (dsquare-clutch/remove-user-view! historian-db design-view view-name)))
+
 (defn remove-user-view!
-  "The design name it will be in the database name with '-' and username.
-  The same for the view name. Creates a concrete view for the user"
+  "Removes a concrete view for the user"
   [^String database ^String username]
   (let [historian-db (couch database)]
     (dsquare-clutch/remove-user-view! historian-db database username)))
