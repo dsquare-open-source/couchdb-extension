@@ -22,7 +22,6 @@
     (couchdb/server-is-up? currentNamespace) => true
     (provided (couchdb/count-db anything) => 3))
 
-
   (fact "if the server is up and the database is ready we just return correctly"
     (couchdb/first-time? currentNamespace) => false
     (provided (clutch-extended/couch currentNamespace) => anything)
