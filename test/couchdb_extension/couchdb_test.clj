@@ -6,7 +6,6 @@
             [be.dsquare.clutch :as clutch-extended]
             [com.ashafa.clutch :as clutch])
   (:import [java.lang IllegalStateException]
-           [java.util Date]
            [java.net ConnectException]))
 
 (def currentNamespace (str *ns*))
@@ -21,7 +20,6 @@
   (fact "if the server is up we return true"
     (couchdb/server-is-up? currentNamespace) => true
     (provided (couchdb/count-db anything) => 3))
-
 
   (fact "if the server is up and the database is ready we just return correctly"
     (couchdb/first-time? currentNamespace) => false

@@ -87,6 +87,13 @@
   (let [historian-db (couch database)]
     (dsquare-clutch/get-user-view historian-db username)))
 
+(defn remove-user-view!
+  "The design name it will be in the database name with '-' and username.
+  The same for the view name. Creates a concrete view for the user"
+  [^String database ^String username]
+  (let [historian-db (couch database)]
+    (dsquare-clutch/remove-user-view! historian-db database username)))
+
 (defn remove-configuration-watch [^clojure.lang.IRef reference]
   (remove-watch reference :configuration))
 
