@@ -23,7 +23,8 @@
   (get-view [this design-name view-name] "Returns a lazy-seq on the couchdb view")
   (create-user-view! [this username javascript-function] "The design name it will in be the database name with '-' and username. The same for the view name. Creates a concrete view for the user")
   (get-user-view [this username] "The design name it will be the database name with '-' and username. The same for the view name. Returns a lazy-seq on the couchdb view.")
-  (remove-user-view! [this database username] "Removes View"))
+  (remove-view! [this design-name view-name] "Removes View")
+  (remove-user-view! [this database username] "Removes user View"))
 
 (defprotocol CouchExtOps
   "Create / Delete views.
@@ -57,6 +58,9 @@
   (get-user-view [^CouchDB this ^String username]
     (let [view-name (str (.url this) "-" username)]
       (com.ashafa.clutch/get-view (.url this) view-name (keyword view-name))))
+  (remove-view! [^CouchDB this ^String design-view ^String view-name ]
+    (let [view-name (str design-view view-name)]
+      (com.ashafa.clutch/dissoc! this view-name)))
   (remove-user-view! [^CouchDB this ^String database ^String username]
     (let [view-name (str "_design/" database "-" username)]
       (com.ashafa.clutch/dissoc! this view-name))))
