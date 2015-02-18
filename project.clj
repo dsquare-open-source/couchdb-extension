@@ -1,4 +1,4 @@
-(defproject couchdb-extension "0.1.4"
+(defproject couchdb-extension "0.1.5-SNAPSHOT"
   :description "Library that extends Clutch library to make it simpler and easier to use"
   :url "https://github.com/dsquare-open-source/couchdb-extension"
   :license {:name "BSD"
